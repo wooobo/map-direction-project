@@ -1,1 +1,1 @@
-export {default} from './DebugObserver';
+export { default } from "./DebugObserver";

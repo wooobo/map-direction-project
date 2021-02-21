@@ -1,24 +1,23 @@
-
-import { css } from '@emotion/react'
-import { NavLink } from 'react-router-dom'
-import palette from '../../lib/palette'
+import { css } from "@emotion/react";
+import { NavLink } from "react-router-dom";
+import palette from "../../lib/palette";
 
 export type SidebarItemProps = {
-    text: string
-    to: string
-}
+  text: string;
+  to: string;
+};
 
 function SidebarItem({ text, to }: SidebarItemProps) {
-    return (
-        <li css={itemStyle}>
-            <NavLink to={to} css={linkStyle} exact>
-                <span>{text}</span>
-            </NavLink>
-        </li>
-    )
+  return (
+    <li css={itemStyle}>
+      <NavLink to={to} css={linkStyle} exact>
+        <span>{text}</span>
+      </NavLink>
+    </li>
+  );
 }
 
-const itemStyle = css``
+const itemStyle = css``;
 
 const linkStyle = css`
   border-radius: 0.5rem;
@@ -47,6 +46,6 @@ const linkStyle = css`
       font-weight: bold;
     }
   }
-`
+`;
 
-export default SidebarItem
+export default SidebarItem;
