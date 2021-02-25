@@ -20,6 +20,7 @@ function SidebarItem({ text, to }: SidebarItemProps) {
 const itemStyle = css``;
 
 const linkStyle = css`
+  width: 100%;
   border-radius: 0.5rem;
   height: 3.75rem;
   display: flex;
