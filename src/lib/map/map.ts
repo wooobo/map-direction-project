@@ -1,75 +1,82 @@
-import Mapboxgl, { LngLatBounds } from "mapbox-gl";
+import Mapboxgl, { LngLat } from "mapbox-gl";
 import { getRoute } from "./api";
+
 type MapOptions = {
   container: string | HTMLElement;
   accessToken: string;
-  mapStyle: string;
+  mapStyle?: string;
   lat: number;
   lng: number;
 };
 
 export default class CustomMap {
-  private _mapOptions: MapOptions;
+  mapInstance?: Mapboxgl.Map;
+  lngLatBounds: Array<LngLat> = [];
 
-  map: object;
-
-  constructor(mapOptions: MapOptions) {
+  builder(mapOptions: MapOptions) {
     Mapboxgl.accessToken = mapOptions.accessToken;
-    this._mapOptions = mapOptions;
-    this.map = this.builder();
-  }
-  builder() {
-    var start = [this._mapOptions.lng, this._mapOptions.lat];
-    var end = [127.254132, 37.540772];
-    const mapInstance = new Mapboxgl.Map({
-      container: this._mapOptions.container,
-      style: this._mapOptions.mapStyle,
-      center: [this._mapOptions.lng, this._mapOptions.lat],
-      zoom: 16,
+    this.mapInstance = new Mapboxgl.Map({
+      container: mapOptions.container,
+      style: mapOptions.mapStyle,
+      center: [mapOptions.lng, mapOptions.lat],
+      zoom: 12,
       dragPan: true,
     });
 
-    let bounds = new LngLatBounds([
-      new Mapboxgl.LngLat(start[0], start[1]),
-      new Mapboxgl.LngLat(end[0], end[1]),
-    ]);
-    console.log(bounds);
-    // // initialize the map canvas to interact with later
-    // // var canvas = mapInstance.getCanvasContainer();
-    //
-    mapInstance.on("load", function () {
-      // make an initial directions request that
-      // starts and ends at the same location
-      getRoute(start, end, mapInstance);
+    const _this = this;
+    this.mapInstance.on("click", function (e) {
+      _this.addMarker(e.target, e.lngLat);
 
-      // Add starting point to the map
-      mapInstance.addLayer({
-        id: "point",
-        type: "circle",
-        source: {
-          type: "geojson",
-          data: {
-            type: "FeatureCollection",
-            features: [
-              {
-                type: "Feature",
-                properties: {},
-                geometry: {
-                  type: "Point",
-                  coordinates: start,
-                },
-              },
-            ],
-          },
-        },
-        paint: {
-          "circle-radius": 10,
-          "circle-color": "#3887be",
-        },
-      });
-      // this is where the code from the next step will go
+      if (_this.lngLatBounds.length === 2) {
+        getRoute(
+          [_this.lngLatBounds[0].lng, _this.lngLatBounds[0].lat],
+          [_this.lngLatBounds[1].lng, _this.lngLatBounds[1].lat],
+          e.target
+        );
+      }
     });
+  }
 
-    return mapInstance;
+  addMarker(mapInstance: Mapboxgl.Map, lngLat: LngLat) {
+    let layerId = "start";
+    if (mapInstance.getLayer("start")) {
+      layerId = "end";
+      this.lngLatBounds.push(lngLat);
+    } else {
+      this.lngLatBounds.push(lngLat);
+    }
+
+    if (mapInstance.getLayer("end")) {
+      return false;
+    }
+
+    mapInstance.addLayer({
+      id: layerId,
+      type: "circle",
+      source: {
+        type: "geojson",
+        data: {
+          type: "FeatureCollection",
+          features: [
+            {
+              type: "Feature",
+              properties: {},
+              geometry: {
+                type: "Point",
+                coordinates: [lngLat.lng, lngLat.lat],
+              },
+            },
+          ],
+        },
+      },
+      paint: {
+        "circle-radius": 10,
+        "circle-color": "#3887be",
+      },
+    });
+  }
+
+  test() {
+    console.log("test...map...");
   }
 }

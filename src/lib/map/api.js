@@ -1,5 +1,6 @@
 // create a function to make a directions request
 export function getRoute(start, end, map) {
+  console.log(start, end);
   // make a directions request using cycling profile
   // an arbitrary start will always be the same
   // only the end or destination will change
@@ -17,7 +18,7 @@ export function getRoute(start, end, map) {
     end[0] +
     "," +
     end[1] +
-    "?steps=true&geometries=geojson&access_token=" +
+    "?overview=full&steps=true&geometries=geojson&access_token=" +
     "pk.eyJ1IjoiaXJvb29yaSIsImEiOiJja2w3Yjk4dGQycG5rMnVtczB1ZmUxNnoxIn0.4UhohTVUBeUVuUiV0Fi2Iw";
 
   // make an XHR request https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest
@@ -26,9 +27,7 @@ export function getRoute(start, end, map) {
   req.onload = function () {
     var json = JSON.parse(req.response);
     var data = json.routes[0];
-    console.log(data);
     var route = data.geometry.coordinates;
-    console.log(route);
     var geojson = {
       type: "Feature",
       properties: {},
@@ -40,11 +39,8 @@ export function getRoute(start, end, map) {
     // if the route already exists on the map, reset it using setData
     console.log(map);
     if (map.getSource("route")) {
-      console.log("d");
       map.getSource("route").setData(geojson);
     } else {
-      console.log("d1");
-      console.log(geojson);
       // otherwise, make a new request
       map.addLayer({
         id: "route",

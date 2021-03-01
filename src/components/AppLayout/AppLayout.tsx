@@ -37,6 +37,4 @@ const sidebarStyle = css`
 
 const mainStyle = css`
   margin-left: 16.25rem;
-  padding-top: 3rem;
-  padding-bottom: 3rem;
 `;
