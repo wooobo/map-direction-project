@@ -1,3 +1,6 @@
+import { mapboxSearchApi } from "../common/request/mapbox";
+const accessToken =
+  "pk.eyJ1IjoiaXJvb29yaSIsImEiOiJja2w3Yjk4dGQycG5rMnVtczB1ZmUxNnoxIn0.4UhohTVUBeUVuUiV0Fi2Iw";
 // create a function to make a directions request
 export function getRoute(start, end, map) {
   console.log(start, end);
@@ -19,7 +22,7 @@ export function getRoute(start, end, map) {
     "," +
     end[1] +
     "?overview=full&steps=true&geometries=geojson&access_token=" +
-    "pk.eyJ1IjoiaXJvb29yaSIsImEiOiJja2w3Yjk4dGQycG5rMnVtczB1ZmUxNnoxIn0.4UhohTVUBeUVuUiV0Fi2Iw";
+    accessToken;
 
   // make an XHR request https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest
   var req = new XMLHttpRequest();
@@ -71,3 +74,13 @@ export function getRoute(start, end, map) {
   };
   req.send();
 }
+const fetchAddressSearch = async ({ search_text }) => {
+  return new Promise((res, rej) => {
+    const fetchData = mapboxSearchApi.fetchAddressSearch(search_text);
+    console.log(fetchData);
+    res(fetchData);
+  });
+  // return
+};
+
+export { fetchAddressSearch };

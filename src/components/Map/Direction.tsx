@@ -13,7 +13,6 @@ function Direction() {
   const mapStyle: string = process.env.REACT_APP_MAPBOX_STYLE as string;
   const mapWrapper = useRef<HTMLDivElement | null>(null);
   const map = useMemo(() => mapInit(), []);
-  const searchValue = "";
 
   useEffect(() => {
     if (!isMapRender) {

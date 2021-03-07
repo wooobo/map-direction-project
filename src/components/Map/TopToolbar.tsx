@@ -1,6 +1,7 @@
 import { css } from "@emotion/react";
 import { useState } from "react";
 import Input from "../Input";
+import * as mapboxSearchApi from "../../lib/map/api";
 
 export type TopToolbarProps = {
   children: React.ReactNode;
@@ -10,13 +11,24 @@ export default function TopToolbar({ children }: TopToolbarProps) {
   return <div>{children}</div>;
 }
 
-export type SearchInputProps = {};
-
-function SearchInput({}: SearchInputProps) {
+function SearchInput() {
   const [keyword, setKeyword] = useState("");
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setKeyword(e.target.value);
+    const inpValue = e.target.value;
+    setKeyword(inpValue);
+    if (inpValue !== "") {
+      mapboxSearchApi
+        .fetchAddressSearch({
+          search_text: inpValue,
+        })
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((err) => {
+          console.log("errrrr", err); // Error: Request is failed
+        });
+    }
   };
 
   return (
