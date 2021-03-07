@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { css, Global } from "@emotion/react";
 import CustomMap from "../../lib/map";
+import TopToolbar from "./TopToolbar";
 
 function mapInit() {
   return new CustomMap();
@@ -12,6 +13,7 @@ function Direction() {
   const mapStyle: string = process.env.REACT_APP_MAPBOX_STYLE as string;
   const mapWrapper = useRef<HTMLDivElement | null>(null);
   const map = useMemo(() => mapInit(), []);
+  const searchValue = "";
 
   useEffect(() => {
     if (!isMapRender) {
@@ -30,7 +32,7 @@ function Direction() {
     <div css={mapContainerStyle}>
       <Global styles={globalStyle} />
       <div css={mapControllerStyle}>
-        <input type="text" />
+        <TopToolbar.SearchInput />
       </div>
       <div css={mapDivStyle} ref={mapWrapper} />
     </div>
@@ -53,11 +55,12 @@ const mapContainerStyle = css`
 
 const mapControllerStyle = css`
   position: absolute;
+  display: flex;
+  align-items: center;
   height: ${topHeight};
   top: 0;
   left: 0;
   right: 0;
-  background-color: darkkhaki;
 `;
 
 const mapDivStyle = css`
