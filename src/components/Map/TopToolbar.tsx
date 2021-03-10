@@ -2,6 +2,7 @@ import { css } from "@emotion/react";
 import { useState } from "react";
 import Input from "../Input";
 import * as mapboxSearchApi from "../../lib/map/api";
+import SearchDropbox from "./SearchDropbox";
 
 export type TopToolbarProps = {
   children: React.ReactNode;
@@ -32,18 +33,64 @@ function SearchInput() {
   };
 
   return (
-    <Input
-      placeholder="장소 검색을 할 수 있습니다."
-      value={keyword}
-      onChange={onChange}
-      css={searchInputStyle}
-    />
+    <div css={topToolbarStyle}>
+      <Input
+        placeholder="장소 검색을 할 수 있습니다."
+        value={keyword}
+        onChange={onChange}
+        css={searchInputStyle}
+      />
+      <SearchDropbox
+        searchItems={[
+          {
+            addrName: "asd",
+            lng: 1,
+            lat: 2,
+          },
+          {
+            addrName: "asd",
+            lng: 1,
+            lat: 2,
+          },
+          {
+            addrName: "asd",
+            lng: 1,
+            lat: 2,
+          },
+          {
+            addrName: "asd",
+            lng: 1,
+            lat: 2,
+          },
+          {
+            addrName: "asd",
+            lng: 1,
+            lat: 2,
+          },
+          {
+            addrName: "asd",
+            lng: 1,
+            lat: 2,
+          },
+          {
+            addrName: "asd",
+            lng: 1,
+            lat: 2,
+          },
+        ]}
+      />
+    </div>
   );
 }
 
 TopToolbar.SearchInput = SearchInput;
 
+const topToolbarStyle = css`
+  display: flex;
+  width: 100%;
+`;
+
 const searchInputStyle = css`
-  flex-basis: 400px;
+  flex-basis: 80%;
   border: 0;
 `;
