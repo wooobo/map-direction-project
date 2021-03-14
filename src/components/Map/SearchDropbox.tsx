@@ -1,23 +1,33 @@
 import { css } from "@emotion/react";
 import palette from "../../lib/palette";
-
-export type SearchListItem = {
-  addrName: String;
-  lng: number;
-  lat: number;
-};
+import { placeFeature } from "../../lib/api/mapbox/searchPlaces";
+import useOnClickOutside from "use-onclickoutside";
+import { useRef } from "react";
 
 export type SearchDropboxProps = {
-  searchItems: SearchListItem[] | null;
+  results: placeFeature[] | null;
+  selectedIndex: number;
+  onClose: Parameters<typeof useOnClickOutside>[1];
+  visible: boolean;
 };
 
-function SearchDropbox({ searchItems }: SearchDropboxProps) {
-  if (!searchItems || searchItems.length === 0) return null;
+function SearchDropbox({
+  results,
+  selectedIndex,
+  onClose,
+  visible,
+}: SearchDropboxProps) {
+  const ref = useRef<HTMLDivElement>(null);
+
+  useOnClickOutside(ref, onClose);
+  if (!visible || !results || results.length === 0) return null;
   return (
     <div css={searchListDropbox}>
       <ul>
-        {searchItems.map((option) => (
-          <li>{option.addrName}</li>
+        {results.map((feature, index) => (
+          <li key={index} css={item(index === selectedIndex)}>
+            {feature.place_name}
+          </li>
         ))}
       </ul>
     </div>
@@ -29,6 +39,7 @@ const searchListDropbox = css`
   top: 50px;
   left: 0.25rem;
   right: 45rem;
+  width: 80%;
   border-radius: 0.25rem;
   background-color: ${palette.white};
   box-shadow: 0px 0px 10px -3px rgba(0, 0, 0, 0.5);
@@ -49,6 +60,12 @@ const searchListDropbox = css`
       }
     }
   }
+`;
+const item = (selected: boolean) => css`
+  ${selected &&
+  css`
+    background-color: ${palette.grey[100]};
+  `}
 `;
 
 export default SearchDropbox;
