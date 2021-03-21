@@ -4,7 +4,6 @@ import Input from "../Input";
 import SearchDropbox from "./SearchDropbox";
 import usePlaceAutoComplete from "../../hooks/useSearchPlaceAutoComplete";
 import { useDebounce } from "use-debounce";
-import { useResetPlaceSearchUnmountEffect } from "../../atoms/addressSearchState";
 import useOnClickOutside from "use-onclickoutside";
 
 export type TopToolbarProps = {
@@ -25,7 +24,6 @@ function SearchInput() {
   );
   const inputRef = useRef<HTMLInputElement>(null);
 
-  useResetPlaceSearchUnmountEffect();
   useEffect(() => {
     if (!open) reset();
   }, [open, reset]);

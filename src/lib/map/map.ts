@@ -1,5 +1,6 @@
 import Mapboxgl, { LngLat } from "mapbox-gl";
-import { getRoute } from "./api";
+import { setRoute } from "./setRoute";
+import { RouteResponse } from "../api/mapbox/searchRoute";
 
 type MapOptions = {
   container: string | HTMLElement;
@@ -26,32 +27,54 @@ export default class CustomMap {
     const _this = this;
     this.mapInstance.on("click", function (e) {
       _this.addMarker(e.target, e.lngLat);
+      if (_this.lngLatBounds.length > 1) {
+        setRoute({
+          map: e.target,
+          lngLatBounds: _this.lngLatBounds,
+        }).then(({ routes }: RouteResponse) => {
+          if (routes) {
+            // 기존 레이어 삭제
+            _this.removeLayer(
+              e.target,
+              `route${_this.lngLatBounds.length - 1}`
+            );
 
-      if (_this.lngLatBounds.length === 2) {
-        getRoute(
-          [_this.lngLatBounds[0].lng, _this.lngLatBounds[0].lat],
-          [_this.lngLatBounds[1].lng, _this.lngLatBounds[1].lat],
-          e.target
-        );
+            console.log("add: ", `route${_this.lngLatBounds.length}`);
+            e.target.addLayer({
+              id: `route${_this.lngLatBounds.length}`,
+              type: "line",
+              source: {
+                type: "geojson",
+                data: {
+                  type: "Feature",
+                  properties: {},
+                  geometry: {
+                    type: "LineString",
+                    coordinates: routes[0].geometry.coordinates,
+                  },
+                },
+              },
+              layout: {
+                "line-join": "round",
+                "line-cap": "round",
+              },
+              paint: {
+                "line-color": "#3887be",
+                "line-width": 5,
+                "line-opacity": 0.75,
+              },
+            });
+          }
+        });
       }
     });
   }
 
   addMarker(mapInstance: Mapboxgl.Map, lngLat: LngLat) {
-    let layerId = "start";
-    if (mapInstance.getLayer("start")) {
-      layerId = "end";
-      this.lngLatBounds.push(lngLat);
-    } else {
-      this.lngLatBounds.push(lngLat);
-    }
-
-    if (mapInstance.getLayer("end")) {
-      return false;
-    }
+    this.lngLatBounds.push(lngLat);
 
     mapInstance.addLayer({
-      id: layerId,
+      id: `point${this.lngLatBounds.length}`,
       type: "circle",
       source: {
         type: "geojson",
@@ -70,10 +93,16 @@ export default class CustomMap {
         },
       },
       paint: {
-        "circle-radius": 10,
-        "circle-color": "#3887be",
+        "circle-radius": 5,
+        "circle-color": "#ff2e63",
       },
     });
+  }
+
+  removeLayer(mapInstance: Mapboxgl.Map, id: string) {
+    if (mapInstance.getLayer(id)) {
+      mapInstance.removeLayer(id);
+    }
   }
 
   test() {

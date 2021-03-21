@@ -1,8 +1,5 @@
 import client from "./client";
-
-// TODO env파일로 옴겨야지
-const accessToken =
-  "pk.eyJ1IjoiaXJvb29yaSIsImEiOiJja2w3Yjk4dGQycG5rMnVtczB1ZmUxNnoxIn0.4UhohTVUBeUVuUiV0Fi2Iw";
+import { accessToken } from "./client";
 
 export async function searchPlaces(keyword: string) {
   const response = await client.get<SearchPlaceResult>(

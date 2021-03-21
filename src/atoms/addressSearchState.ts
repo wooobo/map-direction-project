@@ -25,10 +25,9 @@ export const placeSearchState = atom<SearchParams>({
 });
 
 export const placeParamsKeyword = selector({
-  key: "placeessParamsKeyword",
+  key: "placesParamsKeyword",
   get: ({ get }) => {
-    const params = get(placeSearchState);
-    return params;
+    return get(placeSearchState);
   },
 });
 

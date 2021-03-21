@@ -8,10 +8,10 @@ import { placeFeature } from "../lib/api/mapbox/searchPlaces";
 import useSearchPlaceQuery from "./query/useSearchPlaceQuery";
 
 export default function usePlaceAutoComplete(keyword: string) {
-  console.log("usePlaceAutoComplete");
   const [prevData, setPrevData] = useState<placeFeature[] | null>(null);
   const { data } = useSearchPlaceQuery(keyword, {
     enabled: keyword !== "",
+    staleTime: 600000, // 캐쉬 시간
   });
   const [selectedIndex, setSelectedIndex] = useAutocompleteIndex();
   const reset = useResetAutocompleteIndex();
