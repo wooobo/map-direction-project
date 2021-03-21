@@ -39,7 +39,6 @@ export default class CustomMap {
               `route${_this.lngLatBounds.length - 1}`
             );
 
-            console.log("add: ", `route${_this.lngLatBounds.length}`);
             e.target.addLayer({
               id: `route${_this.lngLatBounds.length}`,
               type: "line",
@@ -60,7 +59,7 @@ export default class CustomMap {
               },
               paint: {
                 "line-color": "#3887be",
-                "line-width": 5,
+                "line-width": 9,
                 "line-opacity": 0.75,
               },
             });
@@ -93,7 +92,7 @@ export default class CustomMap {
         },
       },
       paint: {
-        "circle-radius": 5,
+        "circle-radius": 7,
         "circle-color": "#ff2e63",
       },
     });
@@ -103,9 +102,5 @@ export default class CustomMap {
     if (mapInstance.getLayer(id)) {
       mapInstance.removeLayer(id);
     }
-  }
-
-  test() {
-    console.log("test...map...");
   }
 }

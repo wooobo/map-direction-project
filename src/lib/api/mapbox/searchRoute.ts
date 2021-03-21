@@ -1,19 +1,20 @@
 import client from "./client";
 import { accessToken } from "./client";
+import qs from "qs";
 
 export async function searchRoute(params: SearchRouteParams) {
   const paths = params.wayPoints.map((x) => `${x.lng},${x.lat}`).join(";");
-  const response = await client.get<RouteResponse>(
-    "/directions/v5/mapbox/cycling/" + paths,
-    {
-      params: {
-        overview: "full",
-        steps: true,
-        geometries: "geojson",
-        access_token: accessToken,
-        exclude: "ferry",
-      },
-    }
+
+  client.defaults.headers["Content-Type"] = "application/x-www-form-urlencoded";
+  const response = await client.post<RouteResponse>(
+    `/directions/v5/mapbox/cycling?access_token=${accessToken}`,
+    qs.stringify({
+      overview: "full",
+      steps: true,
+      geometries: "geojson",
+      exclude: "ferry",
+      coordinates: paths,
+    })
   );
 
   return response.data;
@@ -37,6 +38,8 @@ export interface RouteResponse {
   routes: routes[];
   uuid: any[];
   waypoints: any[];
+
+  matchings: routes[];
 }
 
 export type RouteLatLng = {
