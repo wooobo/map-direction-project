@@ -20,6 +20,7 @@ function SidebarItem({ text, to }: SidebarItemProps) {
 const itemStyle = css``;
 
 const linkStyle = css`
+  width: 100%;
   border-radius: 0.5rem;
   height: 3.75rem;
   display: flex;
@@ -29,7 +30,7 @@ const linkStyle = css`
   color: ${palette.blueGrey[600]};
   text-decoration: none;
   &:hover {
-    background: ${palette.blueGrey[50]};
+    background: ${palette.red[50]};
   }
   svg {
     width: 1.75rem;
@@ -40,7 +41,6 @@ const linkStyle = css`
     margin-left: 1rem;
   }
   &.active {
-    background: ${palette.blueGrey[50]};
     color: ${palette.blueGrey[900]};
     span {
       font-weight: bold;

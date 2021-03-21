@@ -8,8 +8,6 @@ function Sidebar() {
       <div className="logo">사이클웹</div>
       <ul css={menuStyle}>
         <SidebarItem text="길찾기" to="/" />
-        {/*<SidebarItem text="Workspace" to="/workspace" />*/}
-        {/*<SidebarItem text="Explore" to="/explore" />*/}
       </ul>
     </div>
   );
@@ -28,8 +26,7 @@ const sidebarStyle = css`
 const menuStyle = css`
   list-style: none;
   padding: 0;
-  margin-top: 5.625rem;
-  margin-left: -1rem;
+  margin-top: 3.625rem;
 `;
 
 export default Sidebar;

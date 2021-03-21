@@ -32,14 +32,9 @@ const sidebarStyle = css`
   height: 100%;
   position: fixed;
   display: flex;
-  padding-top: 3rem;
-  padding-bottom: 3rem;
-  padding-left: 3rem;
+  padding: 2.5rem;
 `;
 
 const mainStyle = css`
-  padding-left: 2rem;
   margin-left: 16.25rem;
-  padding-top: 3rem;
-  padding-bottom: 3rem;
 `;

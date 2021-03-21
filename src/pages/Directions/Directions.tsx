@@ -1,12 +1,14 @@
 import { css } from "@emotion/react";
+import Map from "../../components/Map/Direction";
 
 export type DirectionsProps = {};
 
-function Directions(DirectionsProps: {}) {
+// eslint-disable-next-line no-empty-pattern
+function Directions({}: DirectionsProps) {
   return (
     <div css={pageStyle}>
       <div css={contentStyle}>
-        <span>directions</span>
+        <Map />
       </div>
     </div>
   );
